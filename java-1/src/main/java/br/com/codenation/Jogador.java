@@ -26,7 +26,7 @@ public class Jogador {
     this.salario = salario;
   }
 
-  public long getId() {
+  public Long getId() {
     return id;
   }
 

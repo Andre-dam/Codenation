@@ -176,11 +176,11 @@ public class DesafioMeuTimeApplicationTest {
 
         desafioMeuTimeApplication.incluirTime(1L, "Nautico", LocalDate.now(), "Vermelho", "Branco");
         LocalDate now =  LocalDate.now();
-        desafioMeuTimeApplication.incluirJogador(1L, 1L, "asda", now, 50, BigDecimal.valueOf(1000.0));
-        desafioMeuTimeApplication.incluirJogador(3L, 1L, "asda", now, 51, BigDecimal.valueOf(1001.0));
+        desafioMeuTimeApplication.incluirJogador(1L, 1L, "asda", now, 50, BigDecimal.valueOf(1000));
+        desafioMeuTimeApplication.incluirJogador(3L, 1L, "asda", now, 50, BigDecimal.valueOf(1001));
 
         assertEquals(desafioMeuTimeApplication.buscarJogadorMaiorSalario(1L), (Long)3L);
-        desafioMeuTimeApplication.incluirJogador(2L, 1L, "asda", now, 51, BigDecimal.valueOf(1001.0));
+        desafioMeuTimeApplication.incluirJogador(2L, 1L, "asda", now, 50, BigDecimal.valueOf(1001));
         assertEquals(desafioMeuTimeApplication.buscarJogadorMaiorSalario(1L), (Long)2L);
     }
 

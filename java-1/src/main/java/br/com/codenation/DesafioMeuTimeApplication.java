@@ -38,11 +38,11 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
       Integer nivelHabilidade,
       BigDecimal salario) {
 
+    if (meusJogadores.containsKey(id)) throw new IdentificadorUtilizadoException();
     Time time =
         Optional.ofNullable(this.meusTimes.get(idTime))
             .orElseThrow(TimeNaoEncontradoException::new);
 
-    if (meusJogadores.containsKey(id)) throw new IdentificadorUtilizadoException();
     this.meusJogadores.put(
         id, new Jogador(id, idTime, nome, dataNascimento, nivelHabilidade, salario));
     time.incluirJogador(id);
@@ -55,7 +55,8 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             .map(Jogador::getIdTime)
             .orElseThrow(JogadorNaoEncontradoException::new);
 
-    this.meusTimes.get(idTime).setCapitao(idJogador);
+    Optional.ofNullable(this.meusTimes.get(idTime))
+            .ifPresent(time -> time.setCapitao(idJogador));
   }
 
   @Desafio("buscarCapitaoDoTime")
@@ -85,6 +86,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
         .orElseThrow(TimeNaoEncontradoException::new)
         .getJogadores()
         .stream()
+        .sorted()
         .collect(Collectors.toList());
   }
 
@@ -98,7 +100,7 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             .map(this.meusJogadores::get);
 
     return jogadorStream
-        .max(Comparator.comparingInt(Jogador::getNivelHabilidade))
+        .max(Comparator.comparing(Jogador::getNivelHabilidade))
         .map(Jogador::getId)
         .get();
   }
@@ -113,8 +115,10 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             .map(this.meusJogadores::get);
 
     return jogadorStream
-        .max(ComparadorDesempateReverso.compare(Jogador::getDataNascimento, Jogador::getId))
+        //.max(ComparadorDesempateReverso.compare(Jogador::getDataNascimento, Jogador::getId))
+        .sorted(Comparator.comparing(Jogador::getDataNascimento).thenComparing(Jogador::getId)) //ok
         .map(Jogador::getId)
+            .findFirst()
         .get();
   }
 
@@ -133,9 +137,11 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
             .map(this.meusJogadores::get);
 
     return jogadorStream
-        .max(ComparadorDesempateReverso.compare(Jogador::getSalario, Jogador::getId))
+        //.max(ComparadorDesempateReverso.compare(Jogador::getSalario, Jogador::getId))
+        //.max(Comparator.comparing(Jogador::getSalario).reversed().thenComparing(Jogador::getId).reversed())
+        .sorted(Comparator.comparing(Jogador::getSalario).reversed().thenComparing(Jogador::getId))
         .map(Jogador::getId)
-        .get();
+        .findFirst().get();
   }
 
   @Desafio("buscarSalarioDoJogador")
@@ -150,7 +156,8 @@ public class DesafioMeuTimeApplication implements MeuTimeInterface {
     return meusJogadores
         .values()
         .stream()
-        .sorted(ComparadorDesempateReverso.compare(Jogador::getNivelHabilidade, Jogador::getId).reversed())
+        //.sorted(ComparadorDesempateReverso.compare(Jogador::getNivelHabilidade, Jogador::getId).reversed())
+        .sorted(Comparator.comparing(Jogador::getNivelHabilidade).reversed().thenComparing(Jogador::getId))
         .map(Jogador::getId)
         .limit(top)
         .collect(Collectors.toList());

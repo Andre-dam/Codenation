@@ -14,7 +14,7 @@ public final class ComparadorDesempateReverso {
 
     return (c1, c2) -> {
       int comp = extrator.apply(c1).compareTo(extrator.apply(c2));
-      if (comp == 0) comp = desempateExtrator.apply(c2).compareTo(desempateExtrator.apply(c1));
+      if (comp == 0) comp = desempateExtrator.apply(c1).compareTo(desempateExtrator.apply(c2)) * -1;
       return comp;
     };
   }
