@@ -10,14 +10,13 @@ sourceCompatibility = 1.8
 repositories {
 	mavenCentral()
 }
-
-
 task desafio(type: JavaExec) {
   classpath sourceSets.main.runtimeClasspath
   main = "br.com.codenation.DesafioApplicationRunner"
 }
 
 dependencies {
+	testImplementation group: 'junit', name: 'junit', version: '4.12'
 	compile files('libs/submit-desafio-java-1.jar')
 	compile files('libs/desafio-java-1.jar')
 }

@@ -4,40 +4,49 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Jogador {
-    long id;
-    long idTime;
-    String nome;
+  private final long id;
+  private final long idTime;
+  private final String nome;
+  private final LocalDate dataNascimento;
+  private final Integer nivelHabilidade;
+  private final BigDecimal salario;
 
+  public Jogador(
+      long id,
+      long idTime,
+      String nome,
+      LocalDate dataNascimento,
+      Integer nivelHabilidade,
+      BigDecimal salario) {
+    this.id = id;
+    this.idTime = idTime;
+    this.nome = nome;
+    this.dataNascimento = dataNascimento;
+    this.nivelHabilidade = nivelHabilidade;
+    this.salario = salario;
+  }
 
-    LocalDate dataNascimento;
-    Integer nivelHabilidade;
+  public long getId() {
+    return id;
+  }
 
-    public BigDecimal getSalario() {
-        return salario;
-    }
+  public String getNome() {
+    return nome;
+  }
 
-    BigDecimal salario;
-    Time time;
+  public LocalDate getDataNascimento() {
+    return dataNascimento;
+  }
 
-    public Jogador(long id, long idTime, String nome, LocalDate dataNascimento, Integer nivelHabilidade, BigDecimal salario) {
-        this.id = id;
-        this.idTime = idTime;
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.nivelHabilidade = nivelHabilidade;
-        this.salario = salario;
-    }
+  public Integer getNivelHabilidade() {
+    return nivelHabilidade;
+  }
 
-    public String getNome() {
-        return nome;
-    }
+  public BigDecimal getSalario() {
+    return salario;
+  }
 
-    public Integer getNivelHabilidade() {
-        return nivelHabilidade;
-    }
-
-
-    public LocalDate getDataNascimento() {
-        return dataNascimento;
-    }
+  public long getIdTime() {
+    return idTime;
+  }
 }
