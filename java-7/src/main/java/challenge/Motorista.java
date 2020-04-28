@@ -1,6 +1,8 @@
 package challenge;
 
 
+import com.google.common.base.Preconditions;
+
 import java.util.Objects;
 
 public class Motorista {
@@ -88,11 +90,13 @@ public class Motorista {
         }
 
         public MotoristaBuilder withIdade(int idade) {
+            Preconditions.checkArgument(idade >= 0, "Idade invalida");
             this.idade = idade;
             return this;
         }
 
         public MotoristaBuilder withPontos(int pontos) {
+            Preconditions.checkArgument(pontos >= 0, "Pontos invalidos");
             this.pontos = pontos;
             return this;
         }
@@ -104,6 +108,8 @@ public class Motorista {
 
 
         public Motorista build() {
+            Preconditions.checkNotNull(nome, "Motorista sem nome");
+            Preconditions.checkNotNull(habilitacao, "Motorista sem habilitacao");
             return new Motorista(nome, idade, pontos, habilitacao);
         }
     }

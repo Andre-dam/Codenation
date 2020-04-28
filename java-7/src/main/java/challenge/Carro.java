@@ -1,5 +1,7 @@
 package challenge;
 
+import com.google.common.base.Preconditions;
+
 import java.util.Objects;
 
 public class Carro {
@@ -88,6 +90,8 @@ public class Carro {
         }
 
         public Carro build() {
+            Preconditions.checkNotNull(placa, "Carro sem placa");
+            Preconditions.checkNotNull(cor, "Carro sem cor");
             return new Carro(motorista, placa, cor);
         }
     }
