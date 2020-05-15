@@ -154,4 +154,18 @@ public class SpringChallengeApplicationTests {
         assertEquals(submissions.size(), 1);
         assertEquals(submissions.iterator().next().getId().getChallenge().getId().longValue(), 2L);
     }
+
+    @Test
+    public void AccelerationRepositoryTest() {
+        mockDb();
+
+        // findById
+        Acceleration acceleration = accelerationRepository.findById(1L).get();
+        assertEquals(acceleration.getId().longValue(), 1L);
+
+        // findByCompanyId
+        List<Acceleration> accelerations = accelerationRepository.findByCompanyId(2L);
+        assertEquals(accelerations.size(), 1);
+        assertEquals(accelerations.iterator().next().getId().longValue(), 1L);
+    }
 }
