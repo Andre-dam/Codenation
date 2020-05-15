@@ -14,7 +14,6 @@ import com.challenge.repository.ChallengeRepository;
 import com.challenge.repository.CompanyRepository;
 import com.challenge.repository.SubmissionRepository;
 import com.challenge.repository.UserRepository;
-import net.bytebuddy.asm.Advice;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -23,8 +22,8 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -167,5 +166,22 @@ public class SpringChallengeApplicationTests {
         List<Acceleration> accelerations = accelerationRepository.findByCompanyId(2L);
         assertEquals(accelerations.size(), 1);
         assertEquals(accelerations.iterator().next().getId().longValue(), 1L);
+    }
+
+    @Test
+    public void CompanyRepositoryTest(){
+        mockDb();
+        //findById
+        Company company = companyRepository.findById(1L).get();
+        assertEquals(company.getId().longValue(), 1L);
+
+        // findByAccelerationId
+        List<Company> companies = companyRepository.findByAccelerationId(2L);
+        assertEquals(companies.size(), 1);
+        assertEquals(companies.iterator().next().getId().longValue(), 1L);
+
+        // findByUserId
+        List<Company> companies1 = companyRepository.findByUserId(1L);
+        assertEquals(companies1.size(), 2);
     }
 }
