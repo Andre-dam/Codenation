@@ -3,12 +3,18 @@ package com.challenge;
 import com.challenge.entity.Acceleration;
 import com.challenge.entity.Candidate;
 import com.challenge.entity.CandidateId;
+import com.challenge.entity.Challenge;
 import com.challenge.entity.Company;
+import com.challenge.entity.Submission;
+import com.challenge.entity.SubmissionId;
 import com.challenge.entity.User;
 import com.challenge.repository.AccelerationRepository;
 import com.challenge.repository.CandidateRepository;
+import com.challenge.repository.ChallengeRepository;
 import com.challenge.repository.CompanyRepository;
+import com.challenge.repository.SubmissionRepository;
 import com.challenge.repository.UserRepository;
+import net.bytebuddy.asm.Advice;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -19,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,21 +45,32 @@ public class SpringChallengeApplicationTests {
     @Autowired
     CandidateRepository candidateRepository;
 
+    @Autowired
+    ChallengeRepository challengeRepository;
+
+    @Autowired
+    SubmissionRepository submissionRepository;
 
     @Transactional
     void mockDb() {
-        User user1 = new User(1L, "Andre", "alds@cin.ufpe.br", "Andy", "123", LocalDateTime.now(), null, null);
+        User user1 = new User(1L, "Andre", "alds@gmail.com", "Andy", "123", LocalDateTime.now(), null, null);
         userRepository.save(user1);
 
-        Acceleration acceleration1 = new Acceleration(1L, "Java", "JavaAccel", null, null, LocalDateTime.now());
+        Challenge challenge1 = new Challenge(1L, "challenge1", "challengename", null, null, LocalDateTime.now());
+        challengeRepository.save(challenge1);
+
+        Challenge challenge2 = new Challenge(2L, "challenge2", "challengename2", null, null, LocalDateTime.now());
+        challengeRepository.save(challenge2);
+
+        Acceleration acceleration1 = new Acceleration(1L, "Java", "JavaAccel", challenge2, null, LocalDateTime.now());
         accelerationRepository.save(acceleration1);
 
-        Company company1 = new Company(1L, "inloco", "adsa", null, LocalDateTime.now());
+        Company company1 = new Company(1L, "facebook", "adsa", null, LocalDateTime.now());
         companyRepository.save(company1);
 
         candidateRepository.save(new Candidate(new CandidateId(user1, acceleration1, company1), 1, LocalDateTime.now()));
 
-        Company company2 = new Company(2L, "serttel", "adasdasdsa", null, LocalDateTime.now());
+        Company company2 = new Company(2L, "google", "adasdasdsa", null, LocalDateTime.now());
         companyRepository.save(company2);
 
         candidateRepository.save(new Candidate(new CandidateId(user1, acceleration1, company2), 1, LocalDateTime.now()));
@@ -62,6 +80,14 @@ public class SpringChallengeApplicationTests {
 
         candidateRepository.save(new Candidate(new CandidateId(user1, acceleration2, company1), 1, LocalDateTime.now()));
 
+        User user2 = new User(2L, "Anderthon", "dasd@gmail.com", "Anddy", "1123", LocalDateTime.now(), null, null);
+        userRepository.save(user2);
+
+        Submission submission1 = new Submission(new SubmissionId(challenge1, user1), 56f, LocalDateTime.now());
+        submissionRepository.save(submission1);
+
+        Submission submission2 = new Submission(new SubmissionId(challenge2, user2), 51f, LocalDateTime.now());
+        submissionRepository.save(submission2);
     }
 
     @Test
@@ -113,5 +139,19 @@ public class SpringChallengeApplicationTests {
         List<Candidate> candidates1 = candidateRepository.findById_AccelerationId(2L);
         assertEquals(candidates1.size(), 1);
         assertEquals(candidates1.iterator().next().getId().getAcceleration().getId().longValue(), 2L);
+    }
+
+    @Test
+    public void SubmissionRepositoryTest() {
+        mockDb();
+
+        // findHigherScoreByChallengeId
+        BigDecimal res = submissionRepository.findHigherScoreByChallengeId(1L);
+        assertEquals(res, BigDecimal.valueOf(56f));
+
+        // findByChallengeIdAndAccelerationId
+        List<Submission> submissions = submissionRepository.findByChallengeIdAndAccelerationId(2L, 1L);
+        assertEquals(submissions.size(), 1);
+        assertEquals(submissions.iterator().next().getId().getChallenge().getId().longValue(), 2L);
     }
 }
