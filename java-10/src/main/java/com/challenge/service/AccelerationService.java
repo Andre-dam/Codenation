@@ -4,10 +4,12 @@ import com.challenge.entity.Acceleration;
 import com.challenge.repository.AccelerationRepository;
 import com.challenge.service.interfaces.AccelerationServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class AccelerationService implements AccelerationServiceInterface {
     @Autowired
     AccelerationRepository accelerationRepository;

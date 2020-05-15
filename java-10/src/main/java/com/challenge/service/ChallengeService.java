@@ -4,9 +4,11 @@ import com.challenge.entity.Challenge;
 import com.challenge.repository.ChallengeRepository;
 import com.challenge.service.interfaces.ChallengeServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class ChallengeService implements ChallengeServiceInterface {
     @Autowired
     ChallengeRepository challengeRepository;

@@ -5,10 +5,12 @@ import com.challenge.entity.CandidateId;
 import com.challenge.repository.CandidateRepository;
 import com.challenge.service.interfaces.CandidateServiceInterface;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+@Service
 public class CandidateService implements CandidateServiceInterface {
     @Autowired
     CandidateRepository candidateRepository;
