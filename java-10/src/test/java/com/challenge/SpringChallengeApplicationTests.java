@@ -184,4 +184,14 @@ public class SpringChallengeApplicationTests {
         List<Company> companies1 = companyRepository.findByUserId(1L);
         assertEquals(companies1.size(), 2);
     }
+
+    @Test
+    public void ChallengeRepositoryTest(){
+        mockDb();
+
+        // findByAccelerationIdAndUserId
+        List<Challenge> challenges = challengeRepository.findByAccelerationIdAndUserId(1L,1L);
+        assertEquals(challenges.size(), 1);
+        assertEquals(challenges.iterator().next().getId().longValue(), 2L);
+    }
 }
