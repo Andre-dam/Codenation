@@ -1,7 +1,5 @@
 package br.com.codenation;
 
-import br.com.codenation.BillingProcessor;
-import br.com.codenation.Order;
 import br.com.codenation.paymentmethods.PaymentMethod;
 import org.junit.Assert;
 import org.junit.Test;
